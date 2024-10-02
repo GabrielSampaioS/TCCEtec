@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #mensagem {
+            width: 300px;
+        }
+        #msmChat {
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat</h1>
+    <p>Olá, <span id="usuario"></span></p>
+    
+    <label for="mensagem">Nova mensagem: </label>
+    <input type="text" id="mensagem" placeholder="Digite a mensagem..."><br>
+    <input type="button" onclick="enviar()" value="Enviar"><br>
+
+    <div id="msmChat"></div>
+
+    <script>
+        const mensagemChat = document.getElementById("msmChat");
+        const usuario = localStorage.getItem('usuario');
+        document.getElementById('usuario').textContent = usuario;
+
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({ tipo: 'nameUser', name: usuario }));
+        };
+
+        ws.onmessage = (event) => {
+            const res = JSON.parse(event.data);
+            const mensagemStr = `<div class="mensagem"><strong>${res.user}:</strong> ${res.mensagem}</div>`;
+            mensagemChat.insertAdjacentHTML('beforeend', mensagemStr);
+            mensagemChat.scrollTop = mensagemChat.scrollHeight;
+        };
+
+        const enviar = () => {
+            const mensagem = document.getElementById("mensagem").value.trim();
+            if (mensagem) {
+                ws.send(JSON.stringify({ mensagem: mensagem }));
+                document.getElementById("mensagem").value = '';
+            }
+        };
+    </script>
+</body>
+</html>
