@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style/style.css"></head>
+
     <title>Login Chat</title>
 </head>
 <body>
-    <h1>Acesse o Chat</h1>
+
     <form id="loginForm">
         <label for="user">Nome: </label>
         <input type="text" id="user" placeholder="Digite o nome de usuário" required>
+        <label for="user">Senha: </label>
+        <input type="password" id="password" placeholder="Digitea sua senha" required>
         <input type="submit" value="Acessar">
     </form>
 
@@ -19,9 +23,12 @@
             const user = document.getElementById('user').value.trim();
             if (user) {
                 localStorage.setItem('usuario', user);
+                localStorage.setItem('isAuthenticated', 'true'); //Gambiarra ? talzes
                 window.location.href = '/chat.html';
             }
         };
+        const ws = new WebSocket('ws://localhost:3000');
+
     </script>
 </body>
 </html>

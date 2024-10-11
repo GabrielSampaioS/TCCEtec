@@ -1,0 +1,118 @@
+/* Estilo geral */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Estilo do contêiner de login */
+/* Estilo do contêiner de login */
+#loginForm {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+input[type="text"], input[type="submit"], input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+/* Estilo do contêiner de chat */
+#msmChat {
+    width: 100%;
+    max-width: 85%;
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 10px 15px auto; /* centraliza horizontalmente */
+    
+}
+
+#mensagem {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+input[type="button"] {
+    background-color: #28a745;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    font-size: 16px;
+}
+
+input[type="button"]:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+div.mensagem {
+    margin-bottom: 10px;
+    padding: 12px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+div.mensagem:hover {
+    background-color: #d3d3d3;
+}
+
+div.mensagem strong {
+    color: #007bff; /* azul para os nomes de usuário */
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    #msmChat {
+        width: 90%;
+        max-width: none;
+    }
+
+    #mensagem {
+        font-size: 16px;
+    }
+
+    input[type="button"] {
+        font-size: 18px;
+    }
+}

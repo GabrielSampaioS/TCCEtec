@@ -4,42 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #mensagem {
-            width: 300px;
-        }
-        #msmChat {
-            border: 1px solid #ddd;
-            padding: 10px;
-            height: 200px;
-            overflow-y: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <h1>Chat</h1>
-    <p>Olá, <span id="usuario"></span></p>
-    
-    <label for="mensagem">Nova mensagem: </label>
-    <input type="text" id="mensagem" placeholder="Digite a mensagem..."><br>
-    <input type="button" onclick="enviar()" value="Enviar"><br>
+    <main>
+        <h1>Chat</h1>
+        <p>Olá, <span id="usuario"></span></p>
 
-    <div id="msmChat"></div>
+        <label for="mensagem">Nova mensagem:</label>
+        <input type="text" id="mensagem" placeholder="Digite a mensagem..." aria-label="Digite sua mensagem">
+        <input type="button" onclick="enviar()" value="Enviar" aria-label="Enviar mensagem">
+
+        <section id="msmChat" role="log" aria-live="polite"></section> 
+    </main>
 
     <script>
+
+
+        // Verifcar autenfificaç~]aoi pelo loin
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            // Se não estiver autenticado, redirecionar para a página de login
+            window.location.href = '/';
+        }
+
         const mensagemChat = document.getElementById("msmChat");
-        const usuario = localStorage.getItem('usuario');
+        const usuario = localStorage.getItem('usuario') || 'Usuário Anônimo';
         document.getElementById('usuario').textContent = usuario;
 
-        const ws = new WebSocket('ws://localhost:8080');
+        const ws = new WebSocket('ws://localhost:3000');
 
+        // Evento para quando o WebSocket abre a conexão
         ws.onopen = () => {
             ws.send(JSON.stringify({ tipo: 'nameUser', name: usuario }));
         };
 
+        // Evento para quando o WebSocket recebe uma mensagem
         ws.onmessage = (event) => {
             const res = JSON.parse(event.data);
             const mensagemStr = `<div class="mensagem"><strong>${res.user}:</strong> ${res.mensagem}</div>`;
@@ -47,13 +46,33 @@
             mensagemChat.scrollTop = mensagemChat.scrollHeight;
         };
 
+        // Evento para quando o WebSocket fecha a conexão
+        ws.onclose = () => {
+            alert("Conexão com o servidor foi encerrada.");
+        };
+
+        // Evento para quando o WebSocket encontra um erro
+        ws.onerror = (error) => {
+            console.error("WebSocket Error:", error);
+        };
+
+        // Função para enviar a mensagem
         const enviar = () => {
             const mensagem = document.getElementById("mensagem").value.trim();
-            if (mensagem) {
+            if (mensagem && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({ mensagem: mensagem }));
                 document.getElementById("mensagem").value = '';
+            } else if (ws.readyState !== WebSocket.OPEN) {
+                alert("Conexão com o servidor não está aberta.");
             }
         };
+
+        // Enviar mensagem ao pressionar "Enter"
+        document.getElementById("mensagem").addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                enviar();
+            }
+        });
     </script>
 </body>
 </html>
