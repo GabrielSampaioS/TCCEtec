@@ -15,8 +15,7 @@ const PORT = 3000; // Use a mesma porta para HTTP e WebSocket
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// COnectar e criar banco
-// N conseguir rodar de forma automatica pegar o scprit e rodar manualmente no Mysql
+// Conectar e criar banco
 createDatabaseAndTables();
 
 
