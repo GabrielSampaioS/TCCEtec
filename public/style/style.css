@@ -116,3 +116,60 @@ div.mensagem strong {
         font-size: 18px;
     }
 }
+/* Botão genérico */
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: auto;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    background-color: #004080;
+    transform: translateY(1px);
+}
+
+/* Tamanho grande */
+.btn-large {
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+/* Tamanho pequeno */
+.btn-small {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+/* Estilo da div de contêiner */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espaçamento entre o formulário e o botão */
+}
+
+#loginForm {
+    width: 100%;
+    max-width: 300px; /* Limita a largura máxima */
+}
+
+.btn {
+    width: 100%;
+    max-width: 300px; /* Alinha o botão à largura do formulário */
+}

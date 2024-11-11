@@ -4,40 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/style.css">
-    <title>Login Chat</title>
+    <title>Cadastro Chat</title>
 </head>
 <body>
 
-    <div class="container">      
-         <h1>Realizar Login</h1> <!-- Adicionado título h1 para diferenciar a tela -->
-
+    <div class="container">
+        <h1>Cadastro de Usuário</h1> <!-- Adicionado título h1 para diferenciar a tela -->
+        
         <form id="loginForm">
             <label for="user">Nome: </label>
             <input type="text" id="user" placeholder="Digite o nome de usuário" required>
             <label for="password">Senha: </label>
             <input type="password" id="password" placeholder="Digite a sua senha" required>
-            <input type="submit" value="Acessar">
+            <input type="submit" value="Cadastrar">
         </form>
         
-        <button class="btn" id="btn-cadastro">Novo user</button>
+        <button class="btn" id="btn-cadastro">Voltar para o Login</button>
         <button class="btn" id="btn-anonimo">Acessar de modo Anônimo</button>
     </div>
     
 
     <script>
-        document.getElementById('loginForm').onsubmit = function (e) {
+        document.getElementById('loginForm').onsubmit = function (e) { //Precisa validar nmmo COntrolelr e depois no model com o banco
             e.preventDefault();
             const user = document.getElementById('user').value.trim();
             if (user) {
                 localStorage.setItem('usuario', user);
-                localStorage.setItem('isAuthenticated', 'true'); // Gambiarra? Talvez
+                localStorage.setItem('isAuthenticated', 'true'); 
                 window.location.href = '/chat.html';
             }
         };
 
         document.getElementById('btn-cadastro').onclick = function () {
-            // Redireciona para a página de cadastro
-            window.location.href = '/cadastro.html';
+            window.location.href = '/login.html';
         };
 
         document.getElementById('btn-anonimo').onclick = function () {
