@@ -15,7 +15,7 @@ const PORT = 3000; // Use a mesma porta para HTTP e WebSocket
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Conectar e criar banco
+// Conectar, criar banco e as tabelas
 createDatabaseAndTables();
 
 

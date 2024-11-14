@@ -1,3 +1,4 @@
+const { query } = require('express');
 const connection = require('../config/config');
 
 const createDatabaseAndTables = () => {
@@ -19,40 +20,54 @@ const createDatabaseAndTables = () => {
       }
 
       // Criação das tabelas
-      const createTablesQuery = `
-        CREATE TABLE IF NOT EXISTS usuario (
-        ID INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(60) NOT NULL,
-        senha VARCHAR(20) NOT NULL,
-        nomeUsuario VARCHAR(20) NOT NULL,
-        excluído BOOLEAN NOT NULL DEFAULT 0
-        );
 
-        CREATE TABLE IF NOT EXISTS admin (
-        ID INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(60) NOT NULL,
-        senha VARCHAR(20) NOT NULL,
-        nomeAdmin VARCHAR(20) NOT NULL,
-        excluído BOOLEAN NOT NULL DEFAULT 0
-        );
-
-        CREATE TABLE IF NOT EXISTS mensagem (
-        ID INT AUTO_INCREMENT PRIMARY KEY,
-        mensagem VARCHAR(255) NOT NULL,
-        enviado_por VARCHAR(20) NOT NULL,
-        excluído BOOLEAN NOT NULL DEFAULT 0
-        );
-
-      `;
-
-      // Executar a criação das tabelas
-      connection.query(createTablesQuery, (err, result) => {
-        if (err) {
-          console.error('Erro ao criar tabelas:', err);
-          return;
+      const tables = [
+        {
+          name: 'usuario',
+          query:`
+            CREATE TABLE IF NOT EXISTS usuario (
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(60) NOT NULL,
+            senha VARCHAR(20) NOT NULL,
+            nomeUsuario VARCHAR(20) NOT NULL,
+            excluído BOOLEAN NOT NULL DEFAULT 0
+            )`
+        },
+        {
+          name: 'admin',
+          query:`        
+            CREATE TABLE IF NOT EXISTS admin (
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(60) NOT NULL,
+            senha VARCHAR(20) NOT NULL,
+            nomeAdmin VARCHAR(20) NOT NULL,
+            excluído BOOLEAN NOT NULL DEFAULT 0
+            )`
+        },
+        {
+          name: 'mensagem',
+          query: `
+            CREATE TABLE IF NOT EXISTS mensagem (
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            mensagem VARCHAR(255) NOT NULL,
+            enviado_por VARCHAR(20) NOT NULL,
+            excluído BOOLEAN NOT NULL DEFAULT 0
+            )`
         }
-        console.log('Tabelas criadas ou já existem.');
-      });
+      ]
+        
+      // Executar a criação das tabelas
+
+      tables.forEach(tables => {
+        connection.query(tables.query, (err, result) => {
+          if (err){
+            console.log(`Erro ao criar a tabela ${tables.name}`, err)
+          } else {
+            console.log(`Tabela ${tables.name} criada ou já existe.`)
+          }
+        })
+      })
+
     });
   });
 };
