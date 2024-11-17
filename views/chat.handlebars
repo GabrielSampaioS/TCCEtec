@@ -9,7 +9,7 @@
 <body>
     <main>
         <h1>Chat</h1>
-        <p>Olá, <span id="usuario"></span></p>
+        <p>Olá, <span id="usuario">{{usuario}}</span></p> <!-- Aqui usamos o valor passado do servidor -->
 
         <label for="mensagem">Nova mensagem:</label>
         <input type="text" id="mensagem" placeholder="Digite a mensagem..." aria-label="Digite sua mensagem">
@@ -19,18 +19,11 @@
     </main>
 
     <script>
-
-
-        // Verifcar autenfificaç~]aoi pelo loin
-        if (localStorage.getItem('isAuthenticated') !== 'true') {
-            // Se não estiver autenticado, redirecionar para a página de login
-            window.location.href = '/';
-        }
+        // Agora que o nome do usuário é passado diretamente pelo servidor, 
+        // não é necessário usar o localStorage.
+        const usuario = document.getElementById('usuario').textContent.trim() || 'Usuário Anônimo';
 
         const mensagemChat = document.getElementById("msmChat");
-        const usuario = localStorage.getItem('usuario') || 'Usuário Anônimo';
-        document.getElementById('usuario').textContent = usuario;
-
         const ws = new WebSocket('ws://localhost:3000');
 
         // Evento para quando o WebSocket abre a conexão
@@ -44,16 +37,6 @@
             const mensagemStr = `<div class="mensagem"><strong>${res.user}:</strong> ${res.mensagem}</div>`;
             mensagemChat.insertAdjacentHTML('beforeend', mensagemStr);
             mensagemChat.scrollTop = mensagemChat.scrollHeight;
-        };
-
-        // Evento para quando o WebSocket fecha a conexão
-        ws.onclose = () => {
-            alert("Conexão com o servidor foi encerrada.");
-        };
-
-        // Evento para quando o WebSocket encontra um erro
-        ws.onerror = (error) => {
-            console.error("WebSocket Error:", error);
         };
 
         // Função para enviar a mensagem

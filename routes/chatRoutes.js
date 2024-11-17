@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const { isAuthenticated }= require ('../middlewares/auth')
+const chatController = require('../controllers/chatController')
 
-// Define uma rota para a página principal
-router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'chat.html'));
-  });
-  
+// Protege a rota do chat
+router.get('/', isAuthenticated, chatController.chatPage);
+
 module.exports = router;

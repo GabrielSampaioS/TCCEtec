@@ -3,6 +3,7 @@ const express = require('express');                         // Framework para cr
 const WebSocket = require('ws');                            // Biblioteca para WebSocket
 const exphbs = require('express-handlebars');               // Template engine Handlebars
 const path = require('path');                               // Para lidar com caminhos de arquivos
+const session = require('express-session');                 // Middleware de sessões
 const createDatabaseAndTables = require('./db/dbSetup');    // Função para configurar banco de dados
 
 // Cria a instância do Express
@@ -27,6 +28,14 @@ app.use(
   })
 );
 
+// Middleware para utilização de express-session
+app.use(session({
+  secret: 'chave-secreta',                                  // Troque para uma chave secreta forte
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }                                 // Use secure: true em produção com HTTPS
+}));
+
 // Conecta ao banco de dados e cria tabelas
 createDatabaseAndTables();                                 
 
@@ -45,4 +54,4 @@ const server = app.listen(PORT, () => {
 
 // Configura o WebSocket no servidor HTTP
 const { setupWebSocketServer } = require('./controllers/chatController'); 
-setupWebSocketServer(server);                                // Passa o servidor HTTP para o WebSocket
+setupWebSocketServer(server);                               // Passa o servidor HTTP para o WebSocket

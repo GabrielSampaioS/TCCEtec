@@ -1,4 +1,6 @@
 const user = require('../models/cadastro')
+const { isAuthenticated } = require('../middlewares/auth');
+
 
 
 exports.loginPage = async (req, res) =>{
@@ -36,14 +38,21 @@ exports.loginUser = async (req, res) => {
     const senha = req.body.senha;
 
     try {
-        // Chama a função de login passando nome e senha
+        // Verifica as credenciais no banco de dados
         const respostaLogin = await user.Login(nome, senha);
-        console.log(respostaLogin)
 
-        if (respostaLogin.success) {
-            res.redirect('/chat');  
+        if (respostaLogin.success) {    
+            // Armazena as informações do usuário na sessão
+            req.session.user = {
+                nome: nome,                 // Nome do usuário
+                isAuthenticated: true       // Marca como autenticado
+            }
+
+            // Redireciona para o chat
+            res.redirect('/chat'); // Redireciona para o chat
         } else {
-            res.render('login/login', { errorMessage: respostaLogin.message }); // Mostar para o ususario que o login n foi sucedido
+            // Renderiza a página de login com uma mensagem de erro
+            res.render('login/login', { errorMessage: respostaLogin.message });
         }
     } catch (err) {
         console.error(err.message);
