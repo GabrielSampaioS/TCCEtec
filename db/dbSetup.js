@@ -1,11 +1,15 @@
+//Utilziado para criar a estrutura inicial da aplicação
+
+
 const { query } = require('express');
-const connection = require('../config/config');
+const conn = require('../config/config');
+
 
 const createDatabaseAndTables = () => {
   const createDatabaseQuery = `CREATE DATABASE IF NOT EXISTS chat_db`;
   
   // Criação do banco de dados
-  connection.query(createDatabaseQuery, (err, result) => {
+  conn.query(createDatabaseQuery, (err, result) => {
     if (err) {
       console.error('Erro ao criar o banco de dados:', err);
       return;
@@ -13,7 +17,7 @@ const createDatabaseAndTables = () => {
     console.log('Banco de dados "chat_db" criado ou já existe.');
 
     // Selecionar o banco de dados criado
-    connection.changeUser({ database: 'chat_db' }, (err) => {
+    conn.changeUser({ database: 'chat_db' }, (err) => {
       if (err) {
         console.error('Erro ao selecionar o banco de dados:', err);
         return;
@@ -27,9 +31,9 @@ const createDatabaseAndTables = () => {
           query:`
             CREATE TABLE IF NOT EXISTS usuario (
             ID INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(60) NOT NULL,
+            email VARCHAR(60) NOT NULL UNIQUE,
             senha VARCHAR(20) NOT NULL,
-            nomeUsuario VARCHAR(20) NOT NULL,
+            nomeUsuario VARCHAR(20) NOT NULL UNIQUE,
             excluído BOOLEAN NOT NULL DEFAULT 0
             )`
         },
@@ -38,9 +42,9 @@ const createDatabaseAndTables = () => {
           query:`        
             CREATE TABLE IF NOT EXISTS admin (
             ID INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(60) NOT NULL,
+            email VARCHAR(60) NOT NULL UNIQUE,
             senha VARCHAR(20) NOT NULL,
-            nomeAdmin VARCHAR(20) NOT NULL,
+            nomeAdmin VARCHAR(20) NOT NULL UNIQUE,
             excluído BOOLEAN NOT NULL DEFAULT 0
             )`
         },
@@ -59,7 +63,7 @@ const createDatabaseAndTables = () => {
       // Executar a criação das tabelas
 
       tables.forEach(tables => {
-        connection.query(tables.query, (err, result) => {
+        conn.query(tables.query, (err, result) => {
           if (err){
             console.log(`Erro ao criar a tabela ${tables.name}`, err)
           } else {

@@ -4,8 +4,7 @@ const path = require('path');
 
 // Define uma rota para a página principal
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'login.html'));
-   // res.sed("<h1>Teste</h1>")
+    res.sendFile(path.join(__dirname, '../public', 'chat.html'));
   });
   
 module.exports = router;

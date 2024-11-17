@@ -11,11 +11,13 @@
     <div class="container">      
          <h1>Realizar Login</h1> <!-- Adicionado título h1 para diferenciar a tela -->
 
-        <form id="loginForm">
+        <form id="loginForm" action="/login" method="post">
             <label for="user">Nome: </label>
-            <input type="text" id="user" placeholder="Digite o nome de usuário" required>
+            <input type="text" id="nome" name="nome" placeholder="Digite o nome de usuário" required>
+
             <label for="password">Senha: </label>
-            <input type="password" id="password" placeholder="Digite a sua senha" required>
+            <input type="password" id="password" name="senha" placeholder="Digite a sua senha" required>
+
             <input type="submit" value="Acessar">
         </form>
         
@@ -25,19 +27,10 @@
     
 
     <script>
-        document.getElementById('loginForm').onsubmit = function (e) {
-            e.preventDefault();
-            const user = document.getElementById('user').value.trim();
-            if (user) {
-                localStorage.setItem('usuario', user);
-                localStorage.setItem('isAuthenticated', 'true'); // Gambiarra? Talvez
-                window.location.href = '/chat.html';
-            }
-        };
 
         document.getElementById('btn-cadastro').onclick = function () {
             // Redireciona para a página de cadastro
-            window.location.href = '/cadastro.html';
+            window.location.href = '/cadastro';
         };
 
         document.getElementById('btn-anonimo').onclick = function () {
