@@ -29,34 +29,35 @@ const createDatabaseAndTables = () => {
         {
           name: 'usuario',
           query:`
-            CREATE TABLE IF NOT EXISTS usuario (
+          CREATE TABLE IF NOT EXISTS usuario (
             ID INT AUTO_INCREMENT PRIMARY KEY,
             email VARCHAR(60) NOT NULL UNIQUE,
-            senha VARCHAR(20) NOT NULL,
+            senha VARCHAR(60) NOT NULL,
             nomeUsuario VARCHAR(20) NOT NULL UNIQUE,
-            excluído BOOLEAN NOT NULL DEFAULT 0
+            excluido BOOLEAN NOT NULL DEFAULT 0
             )`
         },
         {
           name: 'admin',
           query:`        
-            CREATE TABLE IF NOT EXISTS admin (
+          CREATE TABLE IF NOT EXISTS admin (
             ID INT AUTO_INCREMENT PRIMARY KEY,
             email VARCHAR(60) NOT NULL UNIQUE,
-            senha VARCHAR(20) NOT NULL,
+            senha VARCHAR(60) NOT NULL,
             nomeAdmin VARCHAR(20) NOT NULL UNIQUE,
-            excluído BOOLEAN NOT NULL DEFAULT 0
+            excluido BOOLEAN NOT NULL DEFAULT 0
             )`
         },
         {
           name: 'mensagem',
           query: `
             CREATE TABLE IF NOT EXISTS mensagem (
-            ID INT AUTO_INCREMENT PRIMARY KEY,
-            mensagem VARCHAR(255) NOT NULL,
-            enviado_por VARCHAR(20) NOT NULL,
-            excluído BOOLEAN NOT NULL DEFAULT 0
-            )`
+              ID INT AUTO_INCREMENT PRIMARY KEY,
+              mensagem VARCHAR(255) NOT NULL,
+              IdUser INT NOT NULL,
+              excluido BOOLEAN NOT NULL DEFAULT 0,
+              FOREIGN KEY (IdUser) REFERENCES usuario(ID) ON DELETE CASCADE
+        )`
         }
       ]
         

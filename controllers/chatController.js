@@ -1,6 +1,9 @@
 // Importa o módulo WebSocket para permitir comunicação em tempo real
 const WebSocket = require('ws');
 
+const chat = require('../models/chat')
+
+
 // Array para armazenar os clientes conectados ao WebSocket
 let clients = [];
 
@@ -29,6 +32,16 @@ const setupWebSocketServer = (server) => {
             client.send(messageToSend);  
           }
         });
+
+        // Salva a mensagem no banco de dados
+        chat.insertMensagem(user, data.mensagem)
+          .then(() => {
+            console.log("Mensagem salva no banco com sucesso!");
+          })
+          .catch(err => {
+            console.error('Erro ao salvar mensagem no banco:', err);
+          });
+
       }
     });
 
@@ -57,6 +70,34 @@ const chatPage = (req, res) => {
   }
 };
 
+const addMensagem = (req, res) => {
+  try {
+    if (req.session.user && req.session.user.isAuthenticated) {
+      const { mensagem } = req.body; // A mensagem que veio do formulário ou da requisição POST
+
+      if (mensagem) {
+        // Insere a mensagem no banco, associando com o usuário autenticado
+        chat.insertMensagem(req.session.user.nome, mensagem)
+          .then(() => {
+            res.status(200).send({ message: 'Mensagem enviada com sucesso!' });
+          })
+          .catch(err => {
+            console.error(err);
+            res.status(500).send('Erro ao tentar enviar a mensagem');
+          });
+      } else {
+        res.status(400).send('Mensagem não fornecida');
+      }
+    } else {
+      res.redirect('/login');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao tentar enviar mensagem');
+  }
+};
+
+
 module.exports = { 
-  setupWebSocketServer, chatPage 
+  setupWebSocketServer, chatPage , addMensagem
 };
