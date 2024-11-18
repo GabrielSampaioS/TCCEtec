@@ -24,23 +24,15 @@
             <input type="submit" value="Cadastrar">
         </form>
         
-        <button class="btn" id="btn-cadastro">Voltar para o Login</button>
-        <button class="btn" id="btn-anonimo">Acessar de modo Anônimo</button>
+        <form action="/login" method="get"><button class="btn" id="btn-anonimo">Realizar o Login</button></form>
+
+
+        <form action="/loginAnonimo" method="post"><button class="btn" id="btn-anonimo">Acessar de modo Anônimo</button></form>
+
     </div>
     
 
     <script>
-        document.getElementById('btn-cadastro').onclick = function () {
-            window.location.href = '/';
-        };
-
-        document.getElementById('btn-anonimo').onclick = function () {
-            const user = 'Anonimo';
-            localStorage.setItem('usuario', user);
-            localStorage.setItem('isAuthenticated', 'true'); // Gambiarra? Talvez
-            window.location.href = '/chat.html';
-        };
-
         const ws = new WebSocket('ws://localhost:3000');
     </script>
 </body>

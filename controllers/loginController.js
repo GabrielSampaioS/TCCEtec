@@ -58,5 +58,16 @@ exports.loginUser = async (req, res) => {
         console.error(err.message);
         res.status(500).send('Erro ao tentar fazer login');
     }
-};
+}
+
+exports.loginAnonimoUser = async (req, res) => {
+    req.session.user = {
+        nome : "Anonimo",
+        isAuthenticated: true
+    }
+
+    res.redirect('/chat')
+}
+
+;
 
